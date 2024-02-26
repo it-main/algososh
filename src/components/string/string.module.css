@@ -1,0 +1,13 @@
+.form {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.string {
+  max-width: 377px;
+}
+
+.button {
+  width: 178px;
+}
