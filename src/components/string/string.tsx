@@ -4,18 +4,32 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import styles from "./string.module.css";
 import { Circle } from "../ui/circle/circle";
+import { getSteps, StepData } from "./utils";
+import { DELAY_IN_MS } from "../../constants/delays";
 
 export const StringComponent: React.FC = () => {
-  let [string, setString] = useState("");
+  const [source, setSource] = useState("");
+  const [inverted, setInverted] = useState<StepData[]>([]);
+  const [isLoader, setIsLoader] = useState(false);
 
   const handleSetString = (event: ChangeEvent<HTMLInputElement>) => {
-    setString(event.target.value);
+    setSource(event.target.value);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const length = string.length;
-  };
+    setIsLoader(true);
+    const steps = getSteps(source);
+    let step = 0;
+    const timer = setInterval(() => {
+      setInverted(steps[step]);
+      step++;
+      if (step === steps.length) {
+        clearInterval(timer);
+        setIsLoader(false);
+      }
+    }, DELAY_IN_MS);
+  }
 
   return (
     <SolutionLayout title="Строка">
@@ -24,16 +38,23 @@ export const StringComponent: React.FC = () => {
           extraClass={styles.string}
           isLimitText={true}
           maxLength={11}
-          value={string}
+          value={source}
           onChange={handleSetString}
         ></Input>
         <Button
           type="submit"
+          isLoader={isLoader}
           extraClass={styles.button}
+          disabled={!Boolean(source)}
           text={"Развернуть"}
         ></Button>
       </form>
-      <Circle index={1}></Circle>
+
+      <div className={styles.circles}>
+        {inverted.map((elem, index) => (
+          <Circle letter={elem.item} key={index} state={elem.state} />
+        ))}
+      </div>
     </SolutionLayout>
   );
 };
