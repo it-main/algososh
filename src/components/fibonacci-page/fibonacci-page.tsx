@@ -5,7 +5,7 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { getFibonacci } from "./utils";
 import { Circle } from "../ui/circle/circle";
-import { DELAY_IN_MS } from "../../constants/delays";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const FibonacciPage: React.FC = () => {
   const [value, setValue] = useState<number>(0);
@@ -27,7 +27,7 @@ export const FibonacciPage: React.FC = () => {
         clearInterval(timer);
         setIsLoader(false);
       }
-    }, DELAY_IN_MS);
+    }, SHORT_DELAY_IN_MS);
   }
 
   function handleSetValue(event: ChangeEvent<HTMLInputElement>) {
