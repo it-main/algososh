@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 980px;
+  margin: 0 auto 48px;
+}
+
+.buttons {
+  display: flex;
+  column-gap: 16px;
+}
+
+.array {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 10px;
+  min-height: 360px;
+}
