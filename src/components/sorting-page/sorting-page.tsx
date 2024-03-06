@@ -13,7 +13,7 @@ import { delay } from "../../utils/delay";
 export const SortingPage: React.FC = () => {
   const [sortingMethod, setSortingMethod] = useState(method.selection);
   const [sortingDirection, setSortingDirection] = useState<Direction>();
-  const [array, setArray] = useState<ArrayItem[]>([]);
+  const [array, setArray] = useState<ArrayItem[]>(getArray());
 
   function handleSetMethod(event: ChangeEvent<HTMLInputElement>) {
     setSortingMethod(event.target.value);
@@ -86,7 +86,7 @@ export const SortingPage: React.FC = () => {
   }
 
   function randomArr() {
-    setArray(getArray(3, 17, 100));
+    setArray(getArray());
   }
 
   return (

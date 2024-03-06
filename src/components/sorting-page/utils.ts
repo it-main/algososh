@@ -5,12 +5,20 @@ export type ArrayItem = {
   state: ElementStates;
 };
 
+const MIN_LENGTH = 3;
+const MAX_LENGTH = 17;
+const MAX_NUM = 100;
+
 export const method = {
   selection: "selection",
   bubble: "bubble",
 };
 
-export function getArray(minLength: number, maxLength: number, maxNum: number) {
+export function getArray(
+  minLength = MIN_LENGTH,
+  maxLength = MAX_LENGTH,
+  maxNum = MAX_NUM,
+) {
   const array = [];
   const randomLength = Math.trunc(
     Math.random() * (maxLength - minLength + 1) + minLength,

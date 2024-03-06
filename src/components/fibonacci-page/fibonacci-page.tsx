@@ -43,7 +43,7 @@ export const FibonacciPage: React.FC = () => {
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input
           extraClass={styles.string}
-          isLimitText={true}
+          isLimitText
           value={value}
           type="number"
           min={1}
