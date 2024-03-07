@@ -1,0 +1,23 @@
+.form {
+  display: flex;
+  justify-content: space-between;
+  max-width: 830px;
+  margin: 0 auto 48px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+}
+
+.source {
+  min-width: 377px;
+}
+
+.dataStructure {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  align-items: center;
+  min-height: 140px;
+}
