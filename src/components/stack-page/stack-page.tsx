@@ -6,6 +6,7 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { stack } from "./utils";
 
 export const StackPage: React.FC = () => {
   enum Process {
@@ -14,17 +15,18 @@ export const StackPage: React.FC = () => {
     Clear,
   }
   const [source, setSource] = React.useState<string>("");
-  const [stack, setStack] = React.useState<string[]>([]);
-  const [currentItem, setCurrentItem] = React.useState<number>(-1);
+  const [currentStack, setCurrentStack] = React.useState<string[]>([]);
+  const [currentItem, setCurrentItem] = React.useState<number>(stack.peak());
   const [isLoader, setIsLoader] = React.useState<Process | undefined>();
   const handleSetSource = (event: ChangeEvent<HTMLInputElement>) => {
     setSource(event.target.value);
   };
 
   function handleAddToStack() {
-    setStack([...stack, source]);
+    stack.push(source);
+    setCurrentStack([...stack.getStack()]);
     setSource("");
-    setCurrentItem(stack.length);
+    setCurrentItem(stack.peak());
     setIsLoader(Process.Add);
     setTimeout(() => {
       setCurrentItem(-1);
@@ -33,17 +35,19 @@ export const StackPage: React.FC = () => {
   }
 
   function handleRemoveFromStack() {
-    setCurrentItem(stack.length - 1);
+    setCurrentItem(stack.peak());
     setIsLoader(Process.Remove);
     setTimeout(() => {
+      stack.pop();
+      setCurrentStack([...stack.getStack()]);
       setCurrentItem(-1);
-      setStack([...stack.slice(0, stack.length - 1)]);
       setIsLoader(undefined);
     }, SHORT_DELAY_IN_MS);
   }
 
   function handleClearStack() {
-    setStack([]);
+    stack.clear();
+    setCurrentStack(stack.getStack());
     setIsLoader(Process.Clear);
     setTimeout(() => {
       setIsLoader(undefined);
@@ -76,24 +80,24 @@ export const StackPage: React.FC = () => {
           />
           <Button
             text={"Удалить"}
-            disabled={!Boolean(stack.length)}
+            disabled={!Boolean(stack.getSize())}
             onClick={handleRemoveFromStack}
             isLoader={isLoader === Process.Remove}
           />
         </div>
         <Button
           text={"Очистить"}
-          disabled={!Boolean(stack.length)}
+          disabled={!Boolean(stack.getSize())}
           onClick={handleClearStack}
         />
       </form>
-      <div className={styles.stack}>
-        {stack.map((item: string, index: number) => (
+      <div className={styles.dataStructure}>
+        {currentStack.map((item: string, index: number) => (
           <Circle
             letter={item}
             key={index}
             index={index}
-            head={stack.length - 1 === index ? "top" : ""}
+            head={stack.peak() === index ? "top" : ""}
             state={stateStackElement(index)}
           />
         ))}
