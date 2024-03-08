@@ -4,55 +4,18 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import styles from "./list-page.module.css";
 import { ElementStates } from "../../types/element-states";
-import { linkedList } from "./utils";
 import { Circle } from "../ui/circle/circle";
 import { ArrowIcon } from "../ui/icons/arrow-icon";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { linkedList } from "./class-linked-list";
+import { getList, getModifyItem, Process, TItem, TModifyItem } from "./utils";
 
 export const ListPage: React.FC = () => {
-  type TItem = {
-    value: string;
-    state: ElementStates;
-  };
-  type TModifyItem = {
-    value: string;
-    index: number;
-    type: "head" | "tail";
-  };
   const [value, setValue] = useState<string>("");
   const [ind, setInd] = useState<number>(0);
   const [list, setList] = useState<TItem[]>(getList());
   const [modifyItem, setModifyItem] = useState<TModifyItem | undefined>();
   const [isLoader, setIsLoader] = useState<Process | undefined>();
-  enum Process {
-    AddToHead,
-    AddToTail,
-    AddByIndex,
-    RemoveFromHead,
-    RemoveFromTail,
-    RemoveByIndex,
-  }
-
-  function getModifyItem(
-    value: string,
-    index: number,
-    type: "head" | "tail" = "head",
-  ): TModifyItem {
-    return {
-      value,
-      index,
-      type,
-    };
-  }
-
-  function getList() {
-    return linkedList.toArray().map((item) => {
-      return {
-        value: item,
-        state: ElementStates.Default,
-      };
-    });
-  }
 
   function handleSetInputValue(event: ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value);
