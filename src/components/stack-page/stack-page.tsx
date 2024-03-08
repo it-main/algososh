@@ -6,14 +6,9 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-import { stack } from "./utils";
+import { Process, stack } from "./utils";
 
 export const StackPage: React.FC = () => {
-  enum Process {
-    Add,
-    Remove,
-    Clear,
-  }
   const [source, setSource] = React.useState<string>("");
   const [currentStack, setCurrentStack] = React.useState<string[]>([]);
   const [currentItem, setCurrentItem] = React.useState<number>(stack.peak());
