@@ -4,11 +4,11 @@
 }
 
 .input {
-  max-width: 204px;
+  max-width: 195px;
 }
 
 .form {
-  max-width: 952px;
+  max-width: 960px;
   margin: 0 auto 46px;
   display: flex;
   flex-direction: column;

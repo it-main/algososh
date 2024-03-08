@@ -70,12 +70,12 @@ export const ListPage: React.FC = () => {
       newList[index].state = ElementStates.Modified;
       setList([...newList]);
       setModifyItem(undefined);
-      setIsLoader(undefined);
       setTimeout(() => {
         const newList = getList();
         newList[index].state = ElementStates.Default;
         setList([...newList]);
         setValue("");
+        setIsLoader(undefined);
       }, SHORT_DELAY_IN_MS);
     }, SHORT_DELAY_IN_MS);
   }
@@ -214,28 +214,46 @@ export const ListPage: React.FC = () => {
             onClick={handleAddToHead}
             isLoader={isLoader === Process.AddToHead}
             extraClass={styles.button}
-            disabled={value === ""}
+            linkedList={"small"}
+            disabled={
+              value === "" ||
+              (isLoader !== undefined && isLoader !== Process.AddToHead) ||
+              linkedList.getSize() >= 8
+            }
           />
           <Button
             text={"Добавить в tail"}
             onClick={handleAddToTail}
             isLoader={isLoader === Process.AddToTail}
             extraClass={styles.button}
-            disabled={value === ""}
+            linkedList={"small"}
+            disabled={
+              value === "" ||
+              (isLoader !== undefined && isLoader !== Process.AddToTail) ||
+              linkedList.getSize() >= 8
+            }
           />
           <Button
             text={"Удалить из head"}
             onClick={handleRemoveFromHead}
             isLoader={isLoader === Process.RemoveFromHead}
             extraClass={styles.button}
-            disabled={!Boolean(linkedList.getSize())}
+            linkedList={"small"}
+            disabled={
+              !Boolean(linkedList.getSize()) ||
+              (isLoader !== undefined && isLoader !== Process.RemoveFromHead)
+            }
           />
           <Button
             text={"Удалить из tail"}
             onClick={handleRemoveFromTail}
             isLoader={isLoader === Process.RemoveFromTail}
             extraClass={styles.button}
-            disabled={!Boolean(linkedList.getSize())}
+            linkedList={"small"}
+            disabled={
+              !Boolean(linkedList.getSize()) ||
+              (isLoader !== undefined && isLoader !== Process.RemoveFromTail)
+            }
           />
         </div>
         <div className={styles.wrapper}>
@@ -254,8 +272,12 @@ export const ListPage: React.FC = () => {
             onClick={handleAddByIndex}
             isLoader={isLoader === Process.AddByIndex}
             linkedList="big"
+            extraClass={styles.button}
             disabled={
-              value === "" || ind > Math.max(linkedList.getSize() - 1, 0)
+              value === "" ||
+              ind > Math.max(linkedList.getSize() - 1, 0) ||
+              (isLoader !== undefined && isLoader !== Process.AddByIndex) ||
+              linkedList.getSize() >= 8
             }
           />
           <Button
@@ -263,7 +285,11 @@ export const ListPage: React.FC = () => {
             onClick={handleRemoveByIndex}
             isLoader={isLoader === Process.RemoveByIndex}
             linkedList="big"
-            disabled={!Boolean(linkedList.getSize())}
+            extraClass={styles.button}
+            disabled={
+              !Boolean(linkedList.getSize()) ||
+              (isLoader !== undefined && isLoader !== Process.RemoveByIndex)
+            }
           />
         </div>
       </form>
