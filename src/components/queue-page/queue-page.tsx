@@ -6,14 +6,9 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { ElementStates } from "../../types/element-states";
-import { queue } from "./utils";
+import { Process, queue } from "./utils";
 
 export const QueuePage: React.FC = () => {
-  enum Process {
-    Add,
-    Remove,
-    Clear,
-  }
   const [source, setSource] = useState<string>("");
   const [currentQueue, setCurrentQueue] = useState<Array<string | null>>([
     ...queue.getQueue(),
