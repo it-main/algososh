@@ -73,9 +73,22 @@ export const QueuePage: React.FC = () => {
   }
 
   function getStateAddButton() {
-    return queue.getTail() >= queue.getSize() - 1 || !Boolean(source);
+    return (
+      queue.getTail() >= queue.getSize() - 1 ||
+      !Boolean(source) ||
+      (isLoader !== undefined && isLoader !== Process.Add)
+    );
   }
-
+  function getStateRemoveButton() {
+    return (
+      queue.isEmpty() || (isLoader !== undefined && isLoader !== Process.Remove)
+    );
+  }
+  function getStateClearButton() {
+    return (
+      queue.isEmpty() || (isLoader !== undefined && isLoader !== Process.Clear)
+    );
+  }
   return (
     <SolutionLayout title="Очередь">
       <form className={styles.form}>
@@ -97,14 +110,14 @@ export const QueuePage: React.FC = () => {
           />
           <Button
             text={"Удалить"}
-            disabled={queue.isEmpty()}
+            disabled={getStateRemoveButton()}
             onClick={handleRemoveFromQueue}
             isLoader={isLoader === Process.Remove}
           />
         </div>
         <Button
           text={"Очистить"}
-          disabled={queue.isEmpty()}
+          disabled={getStateClearButton()}
           onClick={handleClearQueue}
         />
       </form>
