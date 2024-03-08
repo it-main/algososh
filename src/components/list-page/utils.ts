@@ -11,9 +11,13 @@ export class Node<T> {
 
 type TLinkedList<T> = {
   append: (element: T) => void;
+  prepend: (element: T) => void;
   insertAt: (element: T, position: number) => void;
+  removeAt: (index: number) => void;
+  deleteHead: () => void;
+  deleteTail: () => void;
   getSize: () => number;
-  print: () => void;
+  toArray: () => T[];
 };
 
 class LinkedList<T> implements TLinkedList<T> {
@@ -40,6 +44,10 @@ class LinkedList<T> implements TLinkedList<T> {
       current.next = node;
     }
     this.size++;
+  }
+
+  prepend(element: T) {
+    this.insertAt(element, 0);
   }
 
   insertAt(element: T, index: number) {
@@ -116,6 +124,14 @@ class LinkedList<T> implements TLinkedList<T> {
     this.size--;
   }
 
+  deleteHead() {
+    this.removeAt(0);
+  }
+
+  deleteTail() {
+    this.removeAt(this.size - 1);
+  }
+
   getSize() {
     return this.size;
   }
@@ -128,16 +144,6 @@ class LinkedList<T> implements TLinkedList<T> {
       curr = curr.next;
     }
     return [...array];
-  }
-
-  print() {
-    let curr = this.head;
-    let res = "";
-    while (curr) {
-      res += `${curr.value} `;
-      curr = curr.next;
-    }
-    console.log(res);
   }
 }
 
