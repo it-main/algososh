@@ -74,20 +74,20 @@ export const StackPage: React.FC = () => {
           />
           <Button
             text={"Добавить"}
-            disabled={!Boolean(source)}
+            disabled={!Boolean(source) || isLoader === Process.Remove}
             onClick={handleAddToStack}
             isLoader={isLoader === Process.Add}
           />
           <Button
             text={"Удалить"}
-            disabled={!Boolean(stack.getSize())}
+            disabled={!Boolean(stack.getSize()) || isLoader === Process.Add}
             onClick={handleRemoveFromStack}
             isLoader={isLoader === Process.Remove}
           />
         </div>
         <Button
           text={"Очистить"}
-          disabled={!Boolean(stack.getSize())}
+          disabled={!Boolean(stack.getSize()) || isLoader !== undefined}
           onClick={handleClearStack}
         />
       </form>
