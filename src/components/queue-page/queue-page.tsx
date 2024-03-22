@@ -117,7 +117,7 @@ export const QueuePage: React.FC = () => {
         />
       </form>
       <div className={styles.dataStructure}>
-        {currentQueue.map((item: string | null, index: number) => (
+        {currentQueue.map((item, index) => (
           <Circle
             letter={item === null ? "" : item}
             key={index}
