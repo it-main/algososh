@@ -1,8 +1,11 @@
-import { render } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import { Button } from "./button";
 
-describe("testing button component", () => {
-  it("should render button", () => {
-    const elem = render(<Button text="Развернуть" />);
+describe("testing Button component", () => {
+  it("Buttons with caption renders correctly", () => {
+    render(<Button text="Развернуть" />);
+    expect(screen.getByRole("button")).toHaveTextContent("Развернуть");
+    expect(screen.getByRole("button")).toBeInTheDocument();
+    screen.debug();
   });
 });
