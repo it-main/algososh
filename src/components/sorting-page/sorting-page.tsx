@@ -6,50 +6,67 @@ import { Button } from "../ui/button/button";
 import { Direction } from "../../types/direction";
 import { ElementStates } from "../../types/element-states";
 import { Column } from "../ui/column/column";
-import { ArrayItem, getArray, method, swap } from "./utils";
+import {
+  ArrayItem,
+  getArray,
+  getStepsSelectionMethod,
+  method,
+  swap,
+} from "./utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { delay } from "../../utils/delay";
 
 export const SortingPage: React.FC = () => {
   const [sortingMethod, setSortingMethod] = useState(method.selection);
   const [sortingDirection, setSortingDirection] = useState<Direction>();
-  const [array, setArray] = useState<ArrayItem[]>(getArray());
+  const [array, setArray] = useState<ArrayItem[]>([...getArray()]);
 
   function handleSetMethod(event: ChangeEvent<HTMLInputElement>) {
     setSortingMethod(event.target.value);
   }
 
-  async function selectionSorting(direction: Direction) {
-    for (let i = 0; i < array.length; i++) {
-      let maxInd = i;
-      array[maxInd].state = ElementStates.Changing;
-      for (let j = i + 1; j < array.length; j++) {
-        array[j].state = ElementStates.Changing;
-        setArray([...array]);
-        await delay(SHORT_DELAY_IN_MS);
-        if (
-          (direction === Direction.Ascending &&
-            array[j].value < array[maxInd].value) ||
-          (direction === Direction.Descending &&
-            array[j].value > array[maxInd].value)
-        ) {
-          maxInd = j;
-          array[j].state = ElementStates.Changing;
-          if (maxInd === i) {
-            array[maxInd].state = ElementStates.Changing;
-          } else {
-            array[maxInd].state = ElementStates.Default;
-          }
-        }
-        if (maxInd !== j) {
-          array[j].state = ElementStates.Default;
-        }
-        setArray([...array]);
-      }
-      if (maxInd !== i) swap(array, maxInd, i);
-      array[maxInd].state = ElementStates.Default;
-      array[i].state = ElementStates.Modified;
-      setArray([...array]);
+  // async function selectionSorting(direction: Direction) {
+  //   // for (let i = 0; i < steps.length; i++) {
+  //   for (let i = 0; i < array.length; i++) {
+  //     let maxInd = i;
+  //     array[maxInd].state = ElementStates.Changing;
+  //     for (let j = i + 1; j < array.length; j++) {
+  //       array[j].state = ElementStates.Changing;
+  //       setArray([...array]);
+  //       //setArray([...steps[i]]);
+  //       // await delay(SHORT_DELAY_IN_MS);
+  //       await delay(2000);
+  //       if (
+  //         (direction === Direction.Ascending &&
+  //           array[j].value < array[maxInd].value) ||
+  //         (direction === Direction.Descending &&
+  //           array[j].value > array[maxInd].value)
+  //       ) {
+  //         maxInd = j;
+  //         array[j].state = ElementStates.Changing;
+  //         if (maxInd === i) {
+  //           array[maxInd].state = ElementStates.Changing;
+  //         } else {
+  //           array[maxInd].state = ElementStates.Default;
+  //         }
+  //       }
+  //       if (maxInd !== j) {
+  //         array[j].state = ElementStates.Default;
+  //       }
+  //       setArray([...array]);
+  //     }
+  //     if (maxInd !== i) swap(array, maxInd, i);
+  //     array[maxInd].state = ElementStates.Default;
+  //     array[i].state = ElementStates.Modified;
+  //     setArray([...array]);
+  //   }
+  // }
+
+  async function selectionSorting(steps: ArrayItem[][]) {
+    for (let i = 0; i < steps.length; i++) {
+      setArray([...steps[i]]);
+      // console.log(i, steps[i]);
+      await delay(1500);
     }
   }
 
@@ -79,14 +96,18 @@ export const SortingPage: React.FC = () => {
   function handleSorting(direction: Direction) {
     setSortingDirection(direction);
     if (sortingMethod === method.selection) {
-      selectionSorting(direction).finally(() => setSortingDirection(undefined));
+      console.log([...array], "до");
+      const steps = getStepsSelectionMethod([...array], direction);
+      //console.log(steps);
+      // selectionSorting(direction).finally(() => setSortingDirection(undefined));
+      selectionSorting(steps).finally(() => setSortingDirection(undefined));
     } else {
       bubbleSorting(direction).finally(() => setSortingDirection(undefined));
     }
   }
 
   function randomArr() {
-    setArray(getArray());
+    setArray([...getArray()]);
   }
 
   return (
