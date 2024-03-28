@@ -43,11 +43,12 @@ function getStep(
 }
 
 export function getSteps(source: string): StepData[][] {
+  const stepsData: StepData[][] = [];
+  if (!source.length) return stepsData;
   let stepData = Array.from(source).map((item) => ({
     item,
     state: ElementStates.Default,
   }));
-  const stepsData: StepData[][] = [];
   getStep(stepsData, stepData);
   return stepsData;
 }
